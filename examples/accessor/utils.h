@@ -6,8 +6,8 @@
 //===-------------------------------------------------------------===//
 ///
 /// \file
-/// This file contains the implementation of the helper functions  
-/// used in the examples for libompx::Accessor header 
+/// This file contains the implementation of the helper functions
+/// used in the examples for libompx::Accessor header
 ///
 //===-------------------------------------------------------------===//
 #ifndef LIBOMPX_EXAMPLES_UTILS
@@ -16,33 +16,32 @@
 #include <random>
 
 /// A function to populate a matrix with random values given a sparsity value
-void generateIntMatrix(int *&vals, int nrows, int ncols, float nnzRate){
+void generateIntMatrix(int *&vals, int nrows, int ncols, float nnzRate) {
 
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    
-    std::uniform_real_distribution<> nnzDist(0,1);
-    std::uniform_int_distribution<> valsDist(1,9999);
-    
-    for (int i = 0 ; i < nrows; i++){
-        for (int j = 0 ; j < ncols; j++){
-            if (nnzDist(gen) < nnzRate){
-                vals[i*ncols + j] = valsDist(gen);
-            }else{
-                vals[i*ncols + j] = 0;
-            }
-        }
+  std::random_device rd;
+  std::mt19937 gen(rd());
+
+  std::uniform_real_distribution<> nnzDist(0, 1);
+  std::uniform_int_distribution<> valsDist(1, 9999);
+
+  for (int i = 0; i < nrows; i++) {
+    for (int j = 0; j < ncols; j++) {
+      if (nnzDist(gen) < nnzRate) {
+        vals[i * ncols + j] = valsDist(gen);
+      } else {
+        vals[i * ncols + j] = 0;
+      }
     }
+  }
 }
 
-/// A function to print a vector to std::out 
-template <typename T>
-void printVector(T* ptr, int start, int end){
-	std::cout << "{\t";
-	for (int i = start; i < end; i++){
-        std::cout << (T)ptr[i] << "\t";
-	}
-    std::cout << "}\n"; 
+/// A function to print a vector to std::out
+template <typename T> void printVector(T *ptr, int start, int end) {
+  std::cout << "{\t";
+  for (int i = start; i < end; i++) {
+    std::cout << (T)ptr[i] << "\t";
+  }
+  std::cout << "}\n";
 }
 
 #endif
