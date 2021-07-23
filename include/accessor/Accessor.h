@@ -19,7 +19,19 @@
 namespace libompx {
     
     /// enum to hold different access modes
-    enum access_mode{READ, WRITE, READ_WRITE, TEMPORARY};
+    enum access_mode{
+        READ,       /// Read-only(data moved from host to device before
+                    /// the start of target region)
+
+        WRITE,      /// Write(data moved from device to host at the end
+                    /// of target region)
+
+        READ_WRITE, /// Read and Write(data moved from host to device
+                    /// initially and then back from device to host 
+                    /// at the end of the target region) 
+
+        TEMPORARY   /// Allocate data at device only (no movement)
+    };
 
     /// Base Accessor Class Declaration, not intended for direct use by
     /// user
