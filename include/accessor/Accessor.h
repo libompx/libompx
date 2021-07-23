@@ -19,7 +19,7 @@
 namespace libompx {
     
     /// enum to hold different access modes
-    enum access_mode{READ, WRITE, READ_WRITE, ALLOC};
+    enum access_mode{READ, WRITE, READ_WRITE, TEMPORARY};
 
     /// Base Accessor Class Declaration, not intended for direct use by
     /// user
@@ -86,17 +86,17 @@ namespace libompx {
 #pragma omp declare mapper(libompx::Accessor<libompx::READ, double> a) map(to: a._data[0:a._len]) 
 #pragma omp declare mapper(libompx::Accessor<libompx::WRITE, double> a) map(from: a._data[0:a._len])
 #pragma omp declare mapper(libompx::Accessor<libompx::READ_WRITE, double> a) map(tofrom: a._data[0:a._len])
-#pragma omp declare mapper(libompx::Accessor<libompx::ALLOC, double> a) map(alloc: a._data[0:a._len])
+#pragma omp declare mapper(libompx::Accessor<libompx::TEMPORARY, double> a) map(alloc: a._data[0:a._len])
 
 #pragma omp declare mapper(libompx::Accessor<libompx::READ, float> a) map(to: a._data[0:a._len]) 
 #pragma omp declare mapper(libompx::Accessor<libompx::WRITE, float> a) map(from: a._data[0:a._len])
 #pragma omp declare mapper(libompx::Accessor<libompx::READ_WRITE, float> a) map(tofrom: a._data[0:a._len])
-#pragma omp declare mapper(libompx::Accessor<libompx::ALLOC, float> a) map(alloc: a._data[0:a._len])
+#pragma omp declare mapper(libompx::Accessor<libompx::TEMPORARY, float> a) map(alloc: a._data[0:a._len])
 
 #pragma omp declare mapper(libompx::Accessor<libompx::READ, int> a) map(to: a._data[0:a._len]) 
 #pragma omp declare mapper(libompx::Accessor<libompx::WRITE, int> a) map(from: a._data[0:a._len])
 #pragma omp declare mapper(libompx::Accessor<libompx::READ_WRITE, int> a) map(tofrom: a._data[0:a._len])
-#pragma omp declare mapper(libompx::Accessor<libompx::ALLOC, int> a) map(alloc: a._data[0:a._len])
+#pragma omp declare mapper(libompx::Accessor<libompx::TEMPORARY, int> a) map(alloc: a._data[0:a._len])
 
 
 #endif
