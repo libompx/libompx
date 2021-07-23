@@ -1,4 +1,4 @@
-HEADERDIR=../../include/Accessor/
+HEADERDIR=../../include/accessor/
 CXX=clang++
 CXXFLAGS=-std=c++11 -fopenmp -fopenmp-targets=nvptx64 -O3 -gline-tables-only -I $(HEADERDIR)
 
