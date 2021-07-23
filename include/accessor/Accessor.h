@@ -70,7 +70,7 @@ namespace libompx {
         Accessor(Ty* data, size_t len): AccessorBase<AccessMode, Ty>(data, len){ };
 
         /// Returns a pointer to the user-specified data region
-        Ty* getData() const{ return this->_data; };
+        Ty* data() const{ return this->_data; };
 
         /// [] operator overloading returns a reference to a data element
         /// to allow data maniuplation in WRITE/READ_WRITE modes
@@ -86,7 +86,7 @@ namespace libompx {
         
         /// Returns a const pointer to the user-specified data region
         /// to prevent modification of data elements (since access_mode is READ)
-        const Ty* getData() const { return this->_data; };
+        const Ty* data() const { return this->_data; };
 
         /// [] operator overloading  returns a const reference to prevent 
         /// modification of data elements (since access_mode is READ)
