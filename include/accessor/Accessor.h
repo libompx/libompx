@@ -36,10 +36,10 @@ namespace libompx {
     /// Base Accessor Class Declaration, not intended for direct use by
     /// user
     template <access_mode AccessMode, typename Ty>
-    class Accessor_Base {
+    class AccessorBase {
     protected:
         /// Constructor to be used only by child classes
-        Accessor_Base(Ty* data, size_t len):_data(data), _len(len) {};
+        AccessorBase(Ty* data, size_t len):_data(data), _len(len) {};
     public:
 
         // _data and _len need to be public to be used in declare mapper
@@ -63,11 +63,11 @@ namespace libompx {
 
     /// Child Accessor 1: All access modes except for READ
     template <access_mode AccessMode, typename Ty>
-    class Accessor: public Accessor_Base<AccessMode, Ty>{
+    class Accessor: public AccessorBase<AccessMode, Ty>{
     public:
 
         /// Accessor constructor
-        Accessor(Ty* data, size_t len): Accessor_Base<AccessMode, Ty>(data, len){ };
+        Accessor(Ty* data, size_t len): AccessorBase<AccessMode, Ty>(data, len){ };
 
         /// Returns a pointer to the user-specified data region
         Ty* getData() const{ return this->_data; };
@@ -79,10 +79,10 @@ namespace libompx {
 
     /// Child Accessor 2: access_mode specialized for READ
     template <typename Ty>
-    class Accessor<READ, Ty>: public Accessor_Base<READ, Ty>{
+    class Accessor<READ, Ty>: public AccessorBase<READ, Ty>{
     public:
         /// Accessor constructor 
-        Accessor(Ty* data, size_t len): Accessor_Base<READ, Ty>(data, len) {};
+        Accessor(Ty* data, size_t len): AccessorBase<READ, Ty>(data, len) {};
         
         /// Returns a const pointer to the user-specified data region
         /// to prevent modification of data elements (since access_mode is READ)
