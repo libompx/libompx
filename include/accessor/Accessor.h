@@ -52,7 +52,7 @@ namespace libompx {
         size_t _len;
         
         /// Returns the length of the user-specified data region
-        size_t getLen() const{ return _len; };
+        size_t size() const{ return _len; };
         
         /// Return a pointer the start of data region
         const Ty* begin() const { return _data; };
