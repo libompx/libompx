@@ -39,12 +39,9 @@ template <typename T>
 void printVector(T* ptr, int start, int end){
 	std::cout << "{\t";
 	for (int i = start; i < end; i++){
-		if (i == end-1){
-			std::cout << (T)ptr[i] << "\t}" << std::endl;
-		}else{
-			std::cout << (T)ptr[i] << "\t";
-		}
+        std::cout << (T)ptr[i] << "\t";
 	}
+    std::cout << "}\n"; 
 }
 
 #endif
