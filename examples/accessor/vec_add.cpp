@@ -34,14 +34,14 @@ int main(){
     int* c = new int[NROWS * NCOLS];
 
     // Populate a
-    generateIntMatrix(NROWS, NCOLS, 0.7, a);
+    generateIntMatrix(a, NROWS, NCOLS, 0.7);
 
     // Print a
     std::cout << "A: " ;
     printVector(a, 0, NROWS*NCOLS);
 
     // Populate b
-    generateIntMatrix(NROWS, NCOLS, 0.5, b);
+    generateIntMatrix(b, NROWS, NCOLS, 0.5);
 
     // Print b 
     std::cout << "B: " ;

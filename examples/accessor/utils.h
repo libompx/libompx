@@ -16,16 +16,17 @@
 #include <random>
 
 /// A function to populate a matrix with random values given a sparsity value
-void generateIntMatrix(int nrows, int ncols, float nnzRate, int *&vals){
+void generateIntMatrix(int *&vals, int nrows, int ncols, float nnzRate){
+
     std::random_device rd;
     std::mt19937 gen(rd());
+    
     std::uniform_real_distribution<> nnzDist(0,1);
     std::uniform_int_distribution<> valsDist(1,9999);
     
     for (int i = 0 ; i < nrows; i++){
         for (int j = 0 ; j < ncols; j++){
             if (nnzDist(gen) < nnzRate){
-
                 vals[i*ncols + j] = valsDist(gen);
             }else{
                 vals[i*ncols + j] = 0;
