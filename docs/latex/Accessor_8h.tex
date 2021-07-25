@@ -1,0 +1,40 @@
+\hypertarget{Accessor_8h}{}\doxysection{/home/khaled/\+Documents/anl/libompx/include/accessor/\+Accessor.h File Reference}
+\label{Accessor_8h}\index{/home/khaled/Documents/anl/libompx/include/accessor/Accessor.h@{/home/khaled/Documents/anl/libompx/include/accessor/Accessor.h}}
+\doxysubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classlibompx_1_1AccessorBase}{libompx\+::\+Accessor\+Base$<$ Access\+Mode, Ty $>$}}
+\begin{DoxyCompactList}\small\item\em Base \mbox{\hyperlink{classlibompx_1_1Accessor}{Accessor}} Class Declaration, not intended for direct use by user. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classlibompx_1_1Accessor}{libompx\+::\+Accessor$<$ Access\+Mode, Ty $>$}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classlibompx_1_1Accessor}{Accessor}} Class for all access modes except for READ. \end{DoxyCompactList}\item 
+class \mbox{\hyperlink{classlibompx_1_1Accessor_3_01READ_00_01Ty_01_4}{libompx\+::\+Accessor$<$ READ, Ty $>$}}
+\begin{DoxyCompactList}\small\item\em \mbox{\hyperlink{classlibompx_1_1Accessor}{Accessor}} class with access\+\_\+mode specialized for READ. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacelibompx}{libompx}}
+\end{DoxyCompactItemize}
+\doxysubsection*{Enumerations}
+\begin{DoxyCompactItemize}
+\item 
+enum \mbox{\hyperlink{namespacelibompx_aaedee9a394032db2d295803f588617a5}{libompx\+::access\+\_\+mode}} \{ \mbox{\hyperlink{namespacelibompx_aaedee9a394032db2d295803f588617a5a1c2491ba74ea4edf20fd0068ee6f94e5}{libompx\+::\+READ}}
+, \mbox{\hyperlink{namespacelibompx_aaedee9a394032db2d295803f588617a5aeef98e93f39904945f79923766a6ff8b}{libompx\+::\+WRITE}}
+, \mbox{\hyperlink{namespacelibompx_aaedee9a394032db2d295803f588617a5af861f207bd25b5ede22b68c3743b8f24}{libompx\+::\+READ\+\_\+\+WRITE}}
+, \mbox{\hyperlink{namespacelibompx_aaedee9a394032db2d295803f588617a5ade506b61b3f1a2898c322c287533826b}{libompx\+::\+TEMPORARY}}
+ \}
+\begin{DoxyCompactList}\small\item\em enum to hold different access modes \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+This file contains the declaration of the Accessor class, which is used to wrap dynamically allocated regions pointers to provide transparent data movement through Open\+MP declare mapper\hypertarget{Accessor_8h_autotoc_md0}{}\doxysubsection{libompx\+::\+Accessor}\label{Accessor_8h_autotoc_md0}
+User-\/friendly Data Movement for Open\+MP target offloading\hypertarget{Accessor_8h_autotoc_md1}{}\doxysubsubsection{About}\label{Accessor_8h_autotoc_md1}
+{\ttfamily Accessor} is a header that augments Open\+MP target offloading directives, that eliminates the need for the user to write {\ttfamily map} clauses Instead, users can directly create an {\ttfamily Accessor} object around their data pointer, and specify the desired access mode as follows\+: \begin{DoxyVerb}double * data = new data[N];
+// initialize data here as needed
+Accessor<READ, double> data_Acc(data, N);
+\end{DoxyVerb}
+ In the previous example, an {\ttfamily Accessor} object around {\ttfamily data} is instaniated, with the {\ttfamily READ} access mode. Now, the user can use Open\+MP target directive without needing to write a map clause for {\ttfamily data} or {\ttfamily data\+\_\+\+Acc} as follows\+: \begin{DoxyVerb}#pragma omp target teams distribute parallel for
+// device region code that reads from data_Acc 
+\end{DoxyVerb}
+ \hypertarget{Accessor_8h_autotoc_md2}{}\doxysubsubsection{How it works?}\label{Accessor_8h_autotoc_md2}
+{\ttfamily Accessor} header provides an abstraction layer around raw pointers to dynamically allocated memory, which also takes data region size as a constructor parameter It allows the user to specify a template parameter defining one of the following access modes\+: {\ttfamily READ}, {\ttfamily WRITE}, {\ttfamily READ\+\_\+\+WRITE}, or {\ttfamily ALLOC}. Then, the header provides a set of pre-\/defined mappers (using {\ttfamily \#pragma omp declare mapper}) for different access modes and data types.\hypertarget{Accessor_8h_autotoc_md3}{}\doxysubsubsection{How to use?}\label{Accessor_8h_autotoc_md3}
+In order to use {\ttfamily Accessor}, you need an Open\+MP offloading-\/capable compiler (i.\+e. {\ttfamily clang}). In your application, include both {\ttfamily $<$omp.\+h$>$} and the header file {\ttfamily \char`\"{}\+Accessor.\+h\char`\"{}} The {\ttfamily Accessor} class takes two template parameters {\ttfamily \mbox{\hyperlink{classlibompx_1_1Accessor}{libompx\+::\+Accessor}}$<$access\+\_\+mode A, typename T$>$} and two constructor arguments {\ttfamily (T$\ast$ data, size\+\_\+t len)}. Full examples are available in libompx/examples 

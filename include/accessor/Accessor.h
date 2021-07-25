@@ -12,6 +12,35 @@
 ///
 //===-------------------------------------------------------------===//
 
+
+/// \file 
+/// # libompx::Accessor
+/// User-friendly Data Movement for OpenMP target offloading
+///
+/// ## About
+/// `Accessor` is a header that augments OpenMP target offloading directives, that eliminates the need for the user to write `map` clauses
+/// Instead, users can directly create an `Accessor` object around their data pointer, and specify the desired access mode as follows:
+///
+///     double * data = new data[N];
+///     // initialize data here as needed
+///     Accessor<READ, double> data_Acc(data, N);
+///
+/// In the previous example, an `Accessor` object around `data` is instaniated, with the `READ` access mode.
+/// Now, the user can use OpenMP target directive without needing to write a map clause for `data` or `data_Acc` as follows:
+///     
+///     #pragma omp target teams distribute parallel for
+///     // device region code that reads from data_Acc 
+///
+/// ## How it works?
+/// `Accessor` header provides an abstraction layer around raw pointers to dynamically allocated memory, which also takes data region size as a constructor parameter
+/// It allows the user to specify a template parameter defining one of the following access modes: `READ`, `WRITE`, `READ_WRITE`, or `ALLOC`. 
+/// Then, the header provides a set of pre-defined mappers (using `#pragma omp declare mapper`) for different access modes and data types.
+///
+/// ## How to use?
+/// In order to use `Accessor`, you need an OpenMP offloading-capable compiler (i.e. `clang`). In your application, include both `<omp.h>` and the header file `"Accessor.h"`
+/// The `Accessor` class takes two template parameters `libompx::Accessor<access_mode A, typename T>` and two constructor arguments `(T* data, size_t len)`. Full examples are
+/// available in libompx/examples
+
 #ifndef LIBOMPX_ACCESSOR_H
 #define LIBOMPX_ACCESSOR_H
 
@@ -32,9 +61,9 @@ enum access_mode {
   TEMPORARY /// Allocate data at device only (no movement)
 };
 
-/// Base Accessor Class Declaration, not intended for direct use by
-/// user
-template <access_mode AccessMode, typename Ty> class AccessorBase {
+/// Base Accessor Class Declaration, not intended for direct use by user
+template <access_mode AccessMode, typename Ty>
+class AccessorBase {
 protected:
   /// Constructor to be used only by child classes
   AccessorBase(Ty *data, size_t len) : _data(data), _len(len){};
@@ -52,14 +81,14 @@ public:
   /// Returns the length of the user-specified data region
   size_t size() const { return _len; };
 
-  /// Return a pointer the start of data region
+  /// Returns a pointer the start of data region
   const Ty *begin() const { return _data; };
 
   /// Returns a pointer to the end of data region
   const Ty *end() const { return _data + _len; };
 };
 
-/// Child Accessor 1: All access modes except for READ
+/// Accessor Class for all  access modes except for READ
 template <access_mode AccessMode, typename Ty>
 class Accessor : public AccessorBase<AccessMode, Ty> {
 public:
@@ -74,7 +103,7 @@ public:
   Ty &operator[](const int idx) const { return this->_data[idx]; };
 };
 
-/// Child Accessor 2: access_mode specialized for READ
+/// Accessor class with access_mode specialized for READ
 template <typename Ty>
 class Accessor<READ, Ty> : public AccessorBase<READ, Ty> {
 public:
@@ -91,7 +120,7 @@ public:
 };
 } // namespace libompx
 
-/// different mappers based on access mode
+// different mappers based on access mode
 #pragma omp declare mapper(libompx::Accessor <libompx::READ, double> a)        \
     map(to                                                                     \
         : a._data [0:a._len])
@@ -132,5 +161,7 @@ public:
         : a._data [0:a._len])
 
 #endif
+/// @example vec_add.cpp
+/// Simple Integer Vector Addition example that uses the Accessor header 
 
 ///===--- vim: set ft=cpp sw=2 ts=2 sts=2 et: ----------------------===///
